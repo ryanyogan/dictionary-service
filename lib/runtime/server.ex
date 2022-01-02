@@ -1,13 +1,13 @@
 defmodule Dictionary.Runtime.Server do
-  @type t() :: pid
-
   alias Dictionary.Impl.WordList
 
+  @self __MODULE__
+
   def start_link do
-    Agent.start_link(&WordList.word_list/0)
+    Agent.start_link(&WordList.word_list/0, name: @self)
   end
 
-  def random_word(pid) do
-    Agent.get(pid, &WordList.random_word/1)
+  def random_word do
+    Agent.get(@self, &WordList.random_word/1)
   end
 end
